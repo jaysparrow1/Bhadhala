@@ -1,0 +1,442 @@
+<title>Bhadhala</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Brand: Bhadhala ochre with brick, teal and cobalt from Ndebele-inspired stepped geometry */
+/* Layout: single-column storefront card on a tinted ground; vendor earnings panel sits beside it on wide screens, below on phones */
+:root{
+  --bg:#eff1f3; --surface:#ffffff; --ink:#16181d; --muted:#5d6470; --line:#dde1e6;
+  --accent:#e3a21a; --accent-ink:#1a1205; --accent-soft:#fbf0d6; --amber:#b8432f; --amber-soft:#f8e3de;
+  --brick:#b8432f; --teal:#1f7a6d; --cobalt:#2a4fa3;
+  --good:#1b7f4b; --warn:#a15c00; --bad:#b3261e;
+  --econet:#1d4fa0; --netone:#e2741d; --telecel:#c41e3a; --water:#1578a8;
+  --display:"Bricolage Grotesque",ui-sans-serif,system-ui,sans-serif;
+  --body:"Figtree",ui-sans-serif,system-ui,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#121418; --surface:#1b1e24; --ink:#eceef2; --muted:#9aa1ad; --line:#2b3039;
+  --accent:#f0b43a; --accent-ink:#1a1205; --accent-soft:#3a2e12; --amber:#ef7d66; --amber-soft:#3b1f1a;
+  --brick:#e0674f; --teal:#3fae9c; --cobalt:#6d8fe0;
+  --good:#5ccf8e; --warn:#e8a94a; --bad:#f2827a;
+  --econet:#6f9cf0; --netone:#f39a52; --telecel:#f0667e; --water:#56b6e3; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121418; --surface:#1b1e24; --ink:#eceef2; --muted:#9aa1ad; --line:#2b3039;
+  --accent:#f0b43a; --accent-ink:#1a1205; --accent-soft:#3a2e12; --amber:#ef7d66; --amber-soft:#3b1f1a;
+  --brick:#e0674f; --teal:#3fae9c; --cobalt:#6d8fe0;
+  --good:#5ccf8e; --warn:#e8a94a; --bad:#f2827a;
+  --econet:#6f9cf0; --netone:#f39a52; --telecel:#f0667e; --water:#56b6e3; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:15px;line-height:1.5;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:28px 48px}
+.wrap{max-width:1040px;margin:0 auto;display:grid;gap:24px}
+header{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px}
+h1{font-family:var(--display);font-weight:800;font-size:clamp(28px,5vw,42px);line-height:1.05;margin:0;text-wrap:balance;letter-spacing:-.01em}
+h1 span{color:var(--accent)}
+.sub{color:var(--muted);margin:6px 0 0;max-width:52ch}
+.demo-tag{font:600 11px/1 var(--body);letter-spacing:.08em;text-transform:uppercase;background:var(--amber-soft);color:var(--amber);padding:7px 10px;border-radius:999px}
+.brand{display:flex;align-items:center;gap:14px}
+.mark{width:52px;height:52px;flex:none}
+h1{font-size:clamp(34px,6vw,50px)!important}
+.band{height:14px;width:100%;display:block;border-radius:3px;overflow:hidden}
+.cta{box-shadow:0 2px 0 var(--ink)}
+.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:24px;align-items:start}
+@media (max-width:820px){.grid{grid-template-columns:minmax(0,1fr)}}
+
+.store{background:var(--surface);border:1px solid var(--line);border-radius:18px;overflow:hidden}
+.tabs{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--line)}
+.tab{appearance:none;border:0;background:transparent;color:var(--muted);font:600 15px var(--body);padding:16px;cursor:pointer;border-bottom:3px solid transparent}
+.tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+.tab:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.pane{padding:22px;display:grid;gap:18px}
+.label{font:600 12px var(--body);letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px;display:block}
+.nets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.net{appearance:none;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:12px;padding:12px 8px;cursor:pointer;font:600 14px var(--body);display:grid;gap:4px;justify-items:center}
+.net .dot{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:#fff;font:800 13px var(--display)}
+.net small{color:var(--muted);font-weight:500;font-size:11.5px}
+.net[aria-pressed="true"]{border-color:var(--c);background:color-mix(in srgb,var(--c) 10%,var(--surface))}
+input,select{width:100%;font:500 16px var(--body);color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px}
+input.mono{font-family:var(--mono);letter-spacing:.04em}
+.hint{font-size:13px;color:var(--muted);margin-top:6px}
+.hint.err{color:var(--bad)} .hint.ok{color:var(--good)}
+.row{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px}
+.seg{display:inline-flex;border:1.5px solid var(--line);border-radius:10px;overflow:hidden;height:100%}
+.seg button{appearance:none;border:0;background:transparent;color:var(--muted);font:600 14px var(--body);padding:0 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chip{appearance:none;border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:6px 12px;font:500 13.5px var(--body);cursor:pointer;font-variant-numeric:tabular-nums}
+.chip:hover{border-color:var(--accent)}
+.pay{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.pay button{appearance:none;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);border-radius:10px;padding:10px 6px;font:600 13.5px var(--body);cursor:pointer}
+.pay button[aria-pressed="true"]{border-color:var(--accent);background:var(--accent-soft)}
+.summary{border-top:1px dashed var(--line);padding-top:14px;display:grid;gap:6px;font-variant-numeric:tabular-nums}
+.summary div{display:flex;justify-content:space-between;gap:12px}
+.summary .tot{font:700 18px var(--body)}
+.cta{appearance:none;border:0;background:var(--accent);color:var(--accent-ink);font:700 16px var(--body);border-radius:12px;padding:15px;cursor:pointer;width:100%}
+.cta:disabled{opacity:.45;cursor:not-allowed}
+.ghost{appearance:none;background:transparent;border:1.5px solid var(--line);color:var(--ink);font:600 14px var(--body);border-radius:12px;padding:12px;cursor:pointer;width:100%}
+
+.receipt{padding:22px;display:grid;gap:14px}
+.receipt h2{font:800 24px var(--display);margin:0}
+.token{font:500 clamp(18px,4.5vw,24px) var(--mono);letter-spacing:.08em;background:var(--accent-soft);color:var(--ink);border-radius:12px;padding:16px;text-align:center;word-break:break-all}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;font-size:14px;font-variant-numeric:tabular-nums}
+.kv dt{color:var(--muted)} .kv dd{margin:0;text-align:right}
+.spinner{width:34px;height:34px;border:3px solid var(--line);border-top-color:var(--accent);border-radius:50%;animation:spin .8s linear infinite;margin:10px auto}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spinner{animation-duration:3s}}
+
+aside{display:grid;gap:16px}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:20px;display:grid;gap:14px}
+.panel h3{font:800 18px var(--display);margin:0}
+.panel p{margin:0;color:var(--muted);font-size:13.5px}
+.earn{font:800 30px var(--display);font-variant-numeric:tabular-nums}
+.earn.neg{color:var(--bad)} .earn.pos{color:var(--good)}
+table{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:7px 4px;border-bottom:1px solid var(--line)}
+th{font-weight:600;color:var(--muted);font-size:11.5px;text-transform:uppercase;letter-spacing:.05em}
+td:not(:first-child),th:not(:first-child){text-align:right}
+.tbl{overflow-x:auto}
+.note{background:var(--amber-soft);color:var(--ink);border-radius:12px;padding:12px 14px;font-size:13.5px}
+.note b{color:var(--amber)}
+.meterInfo{margin-top:10px;background:var(--accent-soft);border-radius:12px;padding:12px 14px;font-size:14px}
+.meterInfo .kv{margin:6px 0 0}
+.meterInfo.err{background:var(--amber-soft);color:var(--bad)}
+.feeIn{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:8px;align-items:center}
+</style>
+
+<div class="wrap">
+  <header>
+    <div>
+      <div class="brand">
+        <svg class="mark" viewBox="0 0 44 44" aria-hidden="true">
+          <rect width="44" height="44" rx="11" style="fill:var(--accent)"/>
+          <rect x="11" y="8" width="6" height="27" rx="3" style="fill:var(--accent-ink)"/>
+          <circle cx="23" cy="26" r="8" style="fill:none;stroke:var(--accent-ink);stroke-width:6"/>
+          <circle cx="33" cy="11" r="3.6" style="fill:var(--brick)"/>
+        </svg>
+        <h1>Bhadhala</h1>
+      </div>
+      <p class="sub" style="margin-top:8px;font-weight:600;color:var(--ink)">Top up airtime. Buy water tokens.</p>
+      <p class="sub">Econet, NetOne and Telecel airtime plus City of Harare prepaid water, in seconds.</p>
+    </div>
+    <span class="demo-tag" id="demoTag">Prototype · payments simulated</span>
+  </header>
+
+  <svg class="band" preserveAspectRatio="none" aria-hidden="true"><defs><pattern id="steps" width="56" height="14" patternUnits="userSpaceOnUse">
+    <rect width="56" height="14" style="fill:var(--ink)"/>
+    <path d="M0 14 L7 0 L14 14Z" style="fill:var(--accent)"/>
+    <rect x="17" y="3" width="8" height="8" style="fill:var(--surface)"/><rect x="19.5" y="5.5" width="3" height="3" style="fill:var(--brick)"/>
+    <path d="M28 14 L35 0 L42 14Z" style="fill:var(--teal)"/>
+    <rect x="45" y="3" width="8" height="8" style="fill:var(--cobalt)"/>
+  </pattern></defs><rect width="100%" height="14" fill="url(#steps)"/></svg>
+
+  <div class="grid">
+    <section class="store" aria-label="Shop">
+      <div class="tabs" role="tablist">
+        <button class="tab" role="tab" id="tab-air" aria-selected="true">Airtime</button>
+        <button class="tab" role="tab" id="tab-water" aria-selected="false">Harare water</button>
+      </div>
+
+      <form id="form" class="pane" novalidate>
+        <div id="netBlock">
+          <span class="label">Network</span>
+          <div class="nets" id="nets"></div>
+        </div>
+
+        <div id="phoneBlock">
+          <label class="label" for="phone">Mobile number to top up</label>
+          <input id="phone" class="mono" inputmode="numeric" placeholder="077 123 4567" autocomplete="tel">
+          <div class="hint" id="phoneHint">We detect the network from the number.</div>
+        </div>
+
+        <div id="meterBlock" hidden>
+          <label class="label" for="meter">Water meter number</label>
+          <input id="meter" class="mono" inputmode="numeric" placeholder="e.g. 0412 3345 678">
+          <div class="hint" id="meterHint">Printed on your prepaid water meter. The token is sent to the phone below.</div>
+          <button type="button" class="ghost" id="checkMeter" style="margin-top:10px">Check meter</button>
+          <div class="meterInfo" id="meterInfo" hidden></div>
+          <label class="label" for="notify" style="margin-top:14px">Send token to</label>
+          <input id="notify" class="mono" inputmode="numeric" placeholder="077 123 4567">
+        </div>
+
+        <div>
+          <label class="label" for="amount">Amount</label>
+          <div class="row">
+            <div class="seg" role="group" aria-label="Currency">
+              <button type="button" data-cur="USD" aria-pressed="true">USD</button>
+              <button type="button" data-cur="ZWG" aria-pressed="false">ZWG</button>
+            </div>
+            <input id="amount" inputmode="decimal" value="5">
+          </div>
+          <div class="chips" id="chips"></div>
+          <div class="hint" id="amtHint"></div>
+        </div>
+
+        <div>
+          <span class="label">Pay with</span>
+          <div class="pay" id="pay">
+            <button type="button" data-pay="EcoCash" aria-pressed="true">EcoCash</button>
+            <button type="button" data-pay="OneMoney" aria-pressed="false">OneMoney</button>
+            <button type="button" data-pay="Card" aria-pressed="false">Visa / ZimSwitch</button>
+          </div>
+        </div>
+
+        <div class="summary" id="summary"></div>
+        <button class="cta" id="buy" type="submit">Pay</button>
+      </form>
+
+      <div class="receipt" id="processing" hidden>
+        <div class="spinner" aria-hidden="true"></div>
+        <p style="text-align:center;margin:0" id="procText">Waiting for payment approval…</p>
+      </div>
+
+      <div class="receipt" id="receipt" hidden></div>
+    </section>
+
+    <aside>
+      <div class="panel" aria-live="polite">
+        <div>
+          <h3>Vendor earnings</h3>
+          <p>What this sale earns you under Appendix 1 terms. Customers don't see this panel.</p>
+        </div>
+        <div class="earn" id="earn">USD 0.00</div>
+        <div class="kv" id="earnKv"></div>
+        <div id="waterFee" hidden>
+          <span class="label">Water service fee (charged to customer, USD)</span>
+          <div class="tbl"><table id="tiers">
+            <thead><tr><th>Token amount</th><th>Fee</th><th>You keep</th></tr></thead>
+            <tbody id="tierRows"></tbody></table></div>
+        </div>
+        <div class="note" id="waterNote" hidden><b>Note:</b> City of Harare pays no commission. e-Solutions charges you 0.5% per token (min 0.50, max 5.00). You keep the service fee minus that charge, so a 1,000.00 token earns you 10.00 − 5.00 = 5.00.</div>
+      </div>
+
+      <div class="panel">
+        <h3>Today's sales</h3>
+        <div class="tbl"><table>
+          <thead><tr><th>Product</th><th>Sale</th><th>You earn</th></tr></thead>
+          <tbody id="log"></tbody>
+        </table></div>
+        <p id="logTot"></p>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+// Commercial terms from Appendix 1
+const TERMS = {
+  Econet:  {comm:{USD:.05,  ZWG:.035}, fee:null},
+  NetOne:  {comm:{USD:.055, ZWG:.055}, fee:null},
+  Telecel: {comm:{USD:.055, ZWG:.055}, fee:null},
+  Water:   {comm:{USD:0, ZWG:0}, fee:{pct:.005,min:.5,max:5}}
+};
+const NETS = [
+  {id:"Econet",  short:"E", c:"--econet",  pre:["077","078","079"]},
+  {id:"NetOne",  short:"N", c:"--netone",  pre:["071","072"]},
+  {id:"Telecel", short:"T", c:"--telecel", pre:["073"]}
+];
+const CHIPS = {USD:[1,2,5,10,20], ZWG:[20,50,100,200,500]};
+const LIMITS = {USD:[1,500], ZWG:[1,5000]};
+const WATER_LIMITS = {USD:[5,1000], ZWG:[100,25000]};
+const WATER_CHIPS = {USD:[10,50,100,150,250], ZWG:[100,200,500,1000,2000]};
+
+// Water service fee to customer: 1.00 per started 100.00 of token value, capped at 10.00.
+// e-Solutions charges the vendor 0.5% (min 0.50, max 5.00).
+const WATER_FEE_CAP = 10;
+const waterFee = amt => Math.min(WATER_FEE_CAP, Math.ceil(amt/100));
+const $ = id => document.getElementById(id);
+let state = {mode:"air", net:"Econet", cur:"USD", pay:"EcoCash", meterInfo:null};
+// Uses the Bhadhala server when this page is served by it; otherwise runs as a demo.
+let API = false;
+fetch("/api/health").then(r=>r.ok&&r.json()).then(j=>{ if(j&&j.ok){ API=true; $("demoTag").textContent = j.gatewayMode==="live"?"Live":"Test mode"; } }).catch(()=>{});
+async function api(path, body){
+  const r = await fetch(path, body?{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(body)}:{});
+  const j = await r.json().catch(()=>({error:"Unexpected reply from server."}));
+  if(!r.ok) throw new Error(j.error||"Request failed.");
+  return j;
+}
+const esc = s => String(s??"").replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const sales = [
+  {p:"Econet airtime",cur:"USD",amt:5,earn:.25},
+  {p:"NetOne airtime",cur:"USD",amt:2,earn:.11},
+  {p:"Telecel airtime",cur:"ZWG",amt:100,earn:5.5}
+]; // example rows
+
+const money = (cur,v) => `${cur} ${v.toFixed(2)}`;
+const digits = s => s.replace(/\D/g,"");
+function normPhone(s){ let d=digits(s); if(d.startsWith("263")) d="0"+d.slice(3); if(d.length===9 && d[0]==="7") d="0"+d; return d; }
+function netFor(p){ return NETS.find(n=>n.pre.some(x=>p.startsWith(x))); }
+
+// Water fee tiers (vendor panel)
+$("tierRows").innerHTML = Array.from({length:WATER_FEE_CAP},(_,i)=>{
+  const t=i+1, lo=i*100, hi=t*100, top=Math.min(1000,hi);
+  const charge=Math.min(5,Math.max(.5,top*.005));
+  return `<tr data-t="${t}"><td>${i?`${(lo+.01).toFixed(2)} – ${hi.toFixed(2)}`:"Up to 100.00"}</td><td>${t.toFixed(2)}</td><td>${(t-charge).toFixed(2)}${i?"+":""}</td></tr>`;
+}).join("");
+
+// Network buttons
+$("nets").innerHTML = NETS.map(n=>`<button type="button" class="net" data-net="${n.id}" style="--c:var(${n.c})" aria-pressed="${n.id===state.net}">
+  <span class="dot" style="background:var(${n.c})">${n.short}</span>${n.id}<small>${n.pre.join(" / ")}</small></button>`).join("");
+$("nets").onclick = e => { const b=e.target.closest(".net"); if(!b) return; state.net=b.dataset.net; render(); };
+
+function setMode(m){ state.mode=m;
+  $("tab-air").setAttribute("aria-selected", m==="air"); $("tab-water").setAttribute("aria-selected", m==="water");
+  $("netBlock").hidden = m!=="air"; $("phoneBlock").hidden = m!=="air"; $("meterBlock").hidden = m!=="water";
+  $("waterFee").hidden = m!=="water"; $("waterNote").hidden = m!=="water";
+  $("amount").value = m==="water" ? (state.cur==="USD"?10:200) : (state.cur==="USD"?5:100);
+  render(); }
+$("tab-air").onclick=()=>setMode("air"); $("tab-water").onclick=()=>setMode("water");
+
+document.querySelectorAll("[data-cur]").forEach(b=>b.onclick=()=>{ state.cur=b.dataset.cur; $("amount").value=(state.mode==="water"?WATER_CHIPS:CHIPS)[state.cur][2]; render(); });
+$("pay").onclick = e => { const b=e.target.closest("button"); if(!b) return; state.pay=b.dataset.pay; render(); };
+$("chips").onclick = e => { const b=e.target.closest(".chip"); if(!b) return; $("amount").value=b.dataset.v; render(); };
+["phone","notify","amount"].forEach(id=>$(id).addEventListener("input",render));
+["meter","amount"].forEach(id=>$(id).addEventListener("input",()=>{ if(state.meterInfo){ state.meterInfo=null; $("meterInfo").hidden=true; render(); } }));
+$("meter").addEventListener("input",render);
+
+$("checkMeter").onclick = async () => {
+  const meter=digits($("meter").value), amount=parseFloat($("amount").value)||0, box=$("meterInfo");
+  if(meter.length<8||meter.length>13){ box.hidden=false; box.className="meterInfo err"; box.textContent="Enter the full meter number first."; return; }
+  $("checkMeter").disabled=true; $("checkMeter").textContent="Checking with City of Harare…";
+  try{
+    let info;
+    if(API) info = await api("/api/water/lookup",{meter,amount,currency:state.cur});
+    else { await new Promise(r=>setTimeout(r,700));
+      if(/^0+$/.test(meter)) throw new Error("Invalid meter number");
+      info = {name:"T MOYO", arrears:"0.00", fixedCharges:"0.00", estimatedKl:(amount/2.5).toFixed(2)}; }
+    state.meterInfo = info;
+    box.hidden=false; box.className="meterInfo";
+    box.innerHTML = `<b>${esc(info.name)}</b><dl class="kv">`
+      + (info.estimatedKl ? `<dt>Estimated water</dt><dd>${esc(info.estimatedKl)} kL</dd>
+      <dt>Debt deducted</dt><dd>${state.cur} ${esc(info.arrears||"0.00")}</dd>
+      <dt>Other charges</dt><dd>${state.cur} ${esc(info.fixedCharges||"0.00")}</dd>`
+        : `<dt>Outstanding water debt</dt><dd>${state.cur} ${esc(info.outstandingDebt||"0.00")}</dd>`)
+      + `</dl>`;
+  }catch(err){
+    state.meterInfo=null; box.hidden=false; box.className="meterInfo err"; box.textContent=err.message;
+  }
+  $("checkMeter").disabled=false; $("checkMeter").textContent="Check meter"; render();
+};
+
+function calc(){
+  const amt = parseFloat($("amount").value)||0, cur=state.cur;
+  const key = state.mode==="air" ? state.net : "Water";
+  const t = TERMS[key];
+  const commission = amt * t.comm[cur];
+  let fee = 0;
+  if(t.fee){ fee = amt*t.fee.pct; if(cur==="USD") fee = Math.min(t.fee.max, Math.max(t.fee.min, fee)); }
+  const svc = state.mode==="water" && cur==="USD" && amt>0 ? waterFee(amt) : 0;
+  return {amt,cur,key,commission,fee,svc,net:commission-fee+svc,total:amt+svc,rate:t.comm[cur]};
+}
+
+function validate(c){
+  const [lo,hi]=(state.mode==="water"?WATER_LIMITS:LIMITS)[c.cur]; let ok=true;
+  if(c.amt<lo||c.amt>hi){ $("amtHint").textContent=`Enter between ${money(c.cur,lo)} and ${money(c.cur,hi)}.`; $("amtHint").className="hint err"; ok=false; }
+  else { $("amtHint").textContent=""; }
+  if(state.mode==="air"){
+    const p=normPhone($("phone").value), n=netFor(p), h=$("phoneHint");
+    if(!p){ h.textContent="We detect the network from the number."; h.className="hint"; ok=false; }
+    else if(p.length!==10||!n){ h.textContent="Use a Zimbabwe mobile number starting 071, 072, 073, 077, 078 or 079."; h.className="hint err"; ok=false; }
+    else if(n.id!==state.net){ h.textContent=`That's a ${n.id} number. Switch network to ${n.id}?`; h.className="hint err"; ok=false; }
+    else { h.textContent=`${n.id} number confirmed.`; h.className="hint ok"; }
+  } else {
+    const m=digits($("meter").value), p=normPhone($("notify").value), h=$("meterHint");
+    if(m && (m.length<8||m.length>13)){ h.textContent="Meter numbers are usually 11 digits. Check the number on your meter."; h.className="hint err"; ok=false; }
+    else if(!m){ h.className="hint"; h.textContent="Printed on your prepaid water meter. The token is sent to the phone below."; ok=false; }
+    else if(!state.meterInfo){ h.textContent="Tap Check meter to confirm the account name before paying."; h.className="hint"; ok=false; }
+    else { h.textContent="Meter confirmed."; h.className="hint ok"; }
+    if(p.length!==10||!netFor(p)) ok=false;
+  }
+  return ok;
+}
+
+function render(){
+  document.querySelectorAll(".net").forEach(b=>b.setAttribute("aria-pressed", b.dataset.net===state.net));
+  document.querySelectorAll("[data-cur]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.cur===state.cur));
+  document.querySelectorAll("[data-pay]").forEach(b=>b.setAttribute("aria-pressed", b.dataset.pay===state.pay));
+  $("chips").innerHTML = (state.mode==="water"?WATER_CHIPS:CHIPS)[state.cur].map(v=>`<button type="button" class="chip" data-v="${v}">${state.cur} ${v}</button>`).join("");
+
+  const c=calc(), ok=validate(c);
+  const label = state.mode==="air" ? `${state.net} airtime` : "Harare water token";
+  $("summary").innerHTML = `<div><span>${label}</span><span>${money(c.cur,c.amt)}</span></div>`
+    + (c.svc?`<div><span>Service fee</span><span>${money(c.cur,c.svc)}</span></div>`:"")
+    + `<div class="tot"><span>You pay</span><span>${money(c.cur,c.total)}</span></div>`;
+  $("buy").textContent = `Pay ${money(c.cur,c.total)} with ${state.pay}`;
+  $("buy").disabled = !ok;
+
+  const e=$("earn"); e.textContent=(c.net<0?"−":"")+money(c.cur,Math.abs(c.net)); e.className="earn "+(c.net<0?"neg":c.net>0?"pos":"");
+  $("earnKv").innerHTML = `<dt>Commission (${(c.rate*100).toFixed(1)}%)</dt><dd>+${c.commission.toFixed(2)}</dd>`
+    + `<dt>Transaction fee to you</dt><dd>${c.fee?"−"+c.fee.toFixed(2):"Nil"}</dd>`
+    + (state.mode==="water"?`<dt>Service fee from customer</dt><dd>${c.cur==="USD"?"+"+c.svc.toFixed(2):"Not set for ZWG"}</dd>`:"")
+    + (state.mode==="water"&&c.cur==="ZWG"?`<dt colspan="2" style="grid-column:1/-1;font-size:12px">ZWG min/max fee caps not stated in Appendix 1; 0.5% applied uncapped.</dt>`:"");
+  document.querySelectorAll("#tiers tr[data-t]").forEach(r=>r.style.background = (c.cur==="USD"&&+r.dataset.t===c.svc)?"var(--accent-soft)":"");
+  renderLog();
+}
+
+function renderLog(){
+  $("log").innerHTML = sales.map(s=>`<tr><td>${s.p}</td><td>${money(s.cur,s.amt)}</td><td style="color:var(${s.earn<0?"--bad":"--good"})">${s.earn<0?"−":""}${Math.abs(s.earn).toFixed(2)}</td></tr>`).join("");
+  const t={}; sales.forEach(s=>t[s.cur]=(t[s.cur]||0)+s.earn);
+  $("logTot").textContent = "Net earnings: " + Object.entries(t).map(([k,v])=>money(k,v)).join(" · ") + ". First three rows are examples.";
+}
+
+function showReceipt(c, o){
+  $("processing").hidden=true; $("receipt").hidden=false;
+  const label = state.mode==="air" ? `${state.net} airtime` : "Harare water token";
+  const to = state.mode==="air" ? normPhone($("phone").value) : normPhone($("notify").value);
+  const r = o.receipt||{};
+  const tokens = (r.tokens||[]).map(t=>`<div class="token" aria-label="Water token">${esc(t)}</div>`).join("");
+  $("receipt").innerHTML = `<h2>${state.mode==="air"?"Airtime sent":"Token ready"}</h2>
+    ${state.mode==="water" ? tokens + `<p class="hint" style="margin:0">${(r.tokens||[]).length>1?"Enter these tokens on your meter keypad in this order.":"Enter this token on your meter keypad."} A copy goes by SMS to ${esc(to)}.</p>`
+      : `<p style="margin:0">${money(c.cur,c.amt)} ${state.net} airtime is on its way to ${esc(to)}.</p>`}
+    <dl class="kv"><dt>Product</dt><dd>${label}</dd>${state.mode==="water"?`<dt>Meter</dt><dd>${esc(o.meter)}</dd>${r.volumeKl?`<dt>Water</dt><dd>${esc(r.volumeKl)} kL</dd>`:""}${r.receiptNumber?`<dt>City receipt</dt><dd>${esc(r.receiptNumber)}</dd>`:""}`:""}
+    <dt>Paid</dt><dd>${money(c.cur,c.total)} via ${state.pay}</dd><dt>Reference</dt><dd>${esc(r.reference||o.id)}</dd></dl>
+    <button class="ghost" id="again" type="button">Make another purchase</button>`;
+  sales.unshift({p:label,cur:c.cur,amt:c.amt,earn:c.net}); renderLog();
+  $("again").onclick=reset;
+}
+function showProblem(title, msg){
+  $("processing").hidden=true; $("receipt").hidden=false;
+  $("receipt").innerHTML = `<h2>${esc(title)}</h2><p style="margin:0">${esc(msg)}</p><button class="ghost" id="again" type="button">Back</button>`;
+  $("again").onclick=reset;
+}
+function reset(){ $("receipt").hidden=true; $("form").hidden=false; state.meterInfo=null; $("meterInfo").hidden=true; render(); }
+
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
+async function follow(c, o){
+  // Pending means the network hasn't confirmed yet. Never assume failure.
+  while(o.status==="pending" || o.status==="vending"){
+    $("procText").textContent = "Payment received. Waiting for the network to confirm your purchase. You can keep this page open; it updates by itself.";
+    await sleep(5000);
+    try{ o = await api(`/api/orders/${o.id}`); }catch{}
+  }
+  if(o.status==="success") return showReceipt(c,o);
+  if(o.status==="refunded") return showProblem("Purchase failed, money returned", o.message||"The purchase did not go through and your payment has been refunded.");
+  if(o.status==="refund_due") return showProblem("Purchase failed", (o.message?o.message+". ":"")+"Your refund is being processed. Reference: "+o.id);
+  showProblem("Payment not completed", o.message||"Nothing was charged.");
+}
+
+$("form").addEventListener("submit", async e=>{
+  e.preventDefault(); const c=calc(); if(!validate(c)) return;
+  $("form").hidden=true; $("processing").hidden=false;
+  $("procText").textContent = state.pay==="Card" ? "Authorising card payment…" : `Approve the ${money(c.cur,c.total)} prompt on your ${state.pay} phone…`;
+  if(API){
+    try{
+      const body = state.mode==="air"
+        ? {product:"airtime", network:state.net, phone:$("phone").value, amount:c.amt, currency:c.cur, pay:state.pay}
+        : {product:"water", meter:$("meter").value, phone:$("notify").value, amount:c.amt, currency:c.cur, pay:state.pay};
+      await follow(c, await api("/api/orders", body));
+    }catch(err){ showProblem("Couldn't complete purchase", err.message); }
+    return;
+  }
+  await sleep(1800);
+  const demoToken = Array.from({length:5},()=>String(Math.floor(1000+Math.random()*9000))).join("-");
+  showReceipt(c, {id:"BH"+Date.now().toString().slice(-9), meter:digits($("meter").value),
+    receipt: state.mode==="water" ? {tokens:[demoToken], volumeKl:state.meterInfo?.estimatedKl} : {}});
+});
+
+// Example starting state so the page opens filled in
+$("phone").value="077 123 4567"; $("meter").value="04123345678"; $("notify").value="077 123 4567";
+render();
+</script>
