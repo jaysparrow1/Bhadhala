@@ -96,4 +96,4 @@ app.get("/api/orders/:id", (req, res) => {
 });
 
 orders.resumePending();
-app.listen(cfg.port, () => console.log(`Bhadhala on http://localhost:${cfg.port} (gateway: ${cfg.gatewayMode}, payments: ${cfg.paymentsMode})`));
+app.listen(cfg.port, () => console.log(`Bhadala on http://localhost:${cfg.port} (gateway: ${cfg.gatewayMode}, payments: ${cfg.paymentsMode})`));

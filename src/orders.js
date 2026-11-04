@@ -9,7 +9,7 @@ const { quote } = require("./pricing");
 
 const timers = new Map();
 
-// Problems on Bhadhala's side (empty wallet, login) are not the customer's business.
+// Problems on Bhadala's side (empty wallet, login) are not the customer's business.
 // Show a neutral message and raise an alert for the owner instead.
 const INTERNAL_CODES = {
   "16": "Vendor wallet has insufficient funds",

@@ -1,8 +1,8 @@
 // Collecting money from the customer.
 //
-// The e-Solutions gateway draws from Bhadhala's prepaid vendor wallet; it does
+// The e-Solutions gateway draws from Bhadala's prepaid vendor wallet; it does
 // not charge the customer. A separate payment provider must collect EcoCash,
-// OneMoney and card payments and credit Bhadhala.
+// OneMoney and card payments and credit Bhadala.
 //
 // Replace the "mock" branches with the chosen provider. Mobile money is usually
 // asynchronous: the customer approves a prompt on their phone and the provider

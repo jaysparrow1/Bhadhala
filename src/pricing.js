@@ -1,4 +1,4 @@
-// Commercial terms (Appendix 1) plus Bhadhala's own water service fee.
+// Commercial terms (Appendix 1) plus Bhadala's own water service fee.
 // Amounts here are in major units (dollars), not cents.
 
 const COMMISSION = {
@@ -16,9 +16,9 @@ function gatewayCharge(product, currency, amount) {
   return currency === "USD" ? Math.min(5, Math.max(0.5, fee)) : fee;
 }
 
-// Bhadhala water service fee charged to the customer (USD only for now):
+// Bhadala water service fee charged to the customer (USD only for now):
 // 1.00 per started 100.00 of token value, capped at 10.00.
-// e-Solutions' own charge to Bhadhala is capped at 5.00, so the top tier keeps 5.00.
+// e-Solutions' own charge to Bhadala is capped at 5.00, so the top tier keeps 5.00.
 function serviceFee(product, currency, amount) {
   if (product !== "Water" || currency !== "USD" || amount <= 0) return 0;
   return Math.min(10, Math.ceil(amount / 100));

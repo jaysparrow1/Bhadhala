@@ -51,7 +51,7 @@ async function products(merchant) {
     console.log("GATEWAY_MODE is not 'live' in .env, so this would only check the simulator. Set it to live first.");
     return;
   }
-  console.log(`\nBhadhala account check for vendor ${cfg.gateway.vendorNumber}\n`);
+  console.log(`\nBhadala account check for vendor ${cfg.gateway.vendorNumber}\n`);
   console.log("WALLET BALANCES");
   for (const c of ["USD", "ZWG"]) console.log("  " + (await balance(c)));
   console.log("\nBILLERS (product lists)");

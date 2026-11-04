@@ -1,9 +1,9 @@
-<title>Bhadhala</title>
+<title>Bhadala</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
 <style>
-/* Brand: Bhadhala ochre with brick, teal and cobalt from Ndebele-inspired stepped geometry */
+/* Brand: Bhadala ochre with brick, teal and cobalt from Ndebele-inspired stepped geometry */
 /* Layout: single-column storefront card on a tinted ground; vendor earnings panel sits beside it on wide screens, below on phones */
 :root{
   --bg:#eff1f3; --surface:#ffffff; --ink:#16181d; --muted:#5d6470; --line:#dde1e6;
@@ -116,7 +116,7 @@ td:not(:first-child),th:not(:first-child){text-align:right}
           <circle cx="23" cy="26" r="8" style="fill:none;stroke:var(--accent-ink);stroke-width:6"/>
           <circle cx="33" cy="11" r="3.6" style="fill:var(--brick)"/>
         </svg>
-        <h1>Bhadhala</h1>
+        <h1>Bhadala</h1>
       </div>
       <p class="sub" style="margin-top:8px;font-weight:600;color:var(--ink)">Top up airtime. Buy water tokens.</p>
       <p class="sub">Econet, NetOne and Telecel airtime plus City of Harare prepaid water, in seconds.</p>
@@ -248,7 +248,7 @@ const WATER_FEE_CAP = 10;
 const waterFee = amt => Math.min(WATER_FEE_CAP, Math.ceil(amt/100));
 const $ = id => document.getElementById(id);
 let state = {mode:"air", net:"Econet", cur:"USD", pay:"EcoCash", meterInfo:null};
-// Uses the Bhadhala server when this page is served by it; otherwise runs as a demo.
+// Uses the Bhadala server when this page is served by it; otherwise runs as a demo.
 let API = false;
 fetch("/api/health").then(r=>r.ok&&r.json()).then(j=>{ if(j&&j.ok){ API=true; $("demoTag").textContent = j.gatewayMode==="live"?"Live":"Test mode"; } }).catch(()=>{});
 async function api(path, body){

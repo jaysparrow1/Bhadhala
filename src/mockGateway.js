@@ -1,5 +1,5 @@
 // Simulates the gateway using the sample messages in API spec v2.3,
-// so Bhadhala can be built and tested before live access.
+// so Bhadala can be built and tested before live access.
 //
 // Test triggers:
 //   meter 00000000000         -> 14 Invalid meter number

@@ -1,8 +1,8 @@
 {
-  "name": "bhadhala",
+  "name": "bhadala",
   "version": "0.1.0",
   "private": true,
-  "description": "Bhadhala: airtime and City of Harare water tokens via the e-Solutions Bill Payments Gateway",
+  "description": "Bhadala: airtime and City of Harare water tokens via the e-Solutions Bill Payments Gateway",
   "main": "src/server.js",
   "scripts": {
     "start": "node src/server.js",
