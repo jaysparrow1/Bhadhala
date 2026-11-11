@@ -18,7 +18,7 @@ Open http://localhost:3000. It starts in **test mode**: the gateway and payments
 
 | Try this | What happens |
 |---|---|
-| Meter `00000000000` | "Invalid meter number" (code 14) |
+| Meter `00000000` | "Invalid meter number" (code 14) |
 | Amount `5.55` | Gateway error (05); customer is refunded |
 | Amount `7.77` | "Still in progress" (09); confirmed on the next resend |
 | Amount `6.66` | Network timeout; confirmed on the next resend |
@@ -28,6 +28,12 @@ In test mode, resends wait 3 minutes as the spec requires. To see them faster, s
 ## Testing against the e-Solutions test gateway
 
 In `.env`, set `GATEWAY_MODE=live` (the test URL is already filled in), plus your test `GATEWAY_USERNAME`, `GATEWAY_PASSWORD` and `VENDOR_NUMBER`. Keep `PAYMENTS_MODE=mock` so no customer is charged. Then buy small amounts on the site and check each one against the gateway's records.
+
+## Testing payments with Pesepay
+
+In `.env`, set `PAYMENTS_MODE=pesepay` and your **sandbox** `PESEPAY_INTEGRATION_KEY` and `PESEPAY_ENCRYPTION_KEY` (32 characters). The sandbox supports USD with EcoCash (PZW211), Visa and Mastercard only. Every Pesepay request and reply is printed in Terminal as `-> pesepay` / `<- pesepay`; keys are never printed.
+
+Keep `GATEWAY_MODE=mock` while testing payments, so a successful test payment doesn't spend real money from the vendor wallet.
 
 ## How a purchase works
 
@@ -39,6 +45,8 @@ In `.env`, set `GATEWAY_MODE=live` (the test URL is already filled in), plus you
 
 Pricing, commission and the water service fee live in `src/pricing.js`.
 
+**Meter numbers:** City of Harare meters are 13 digits (e.g. `0120251247991`). Customers can type just the last 8 (`51247991`); Bhadala adds the `01202` prefix (`src/meter.js`, override with `COH_METER_PREFIX`). Spaces and dashes are ignored, and the full number is shown back to the customer before they pay.
+
 **Water (City of Harare) fees, USD:** the customer pays a service fee of 1.00 per started 100.00 of token value, capped at 10.00. e-Solutions charges Bhadala 0.5% of the token value (min 0.50, max 5.00). Example: a 1,000.00 token → customer fee 10.00, e-Solutions charge 5.00, Bhadala keeps 5.00.
 
 ## Before going live
@@ -48,7 +56,10 @@ Pricing, commission and the water service fee live in `src/pricing.js`.
 - [ ] **Authentication.** The spec says username and password. The code sends them as HTTP Basic auth; confirm that's the method.
 - [ ] **Credentials.** Set `GATEWAY_USERNAME`, `GATEWAY_PASSWORD`, `VENDOR_NUMBER` in `.env` on the server only. Never in the web page, never in chat or email.
 - [x] **Water merchant name:** `COH` / `COH_PREPAID` (City of Harare, spec section 5.11).
-- [ ] **Customer payments.** The gateway spends from the vendor wallet; it does not charge customers. Choose a payment provider for EcoCash, OneMoney and cards and implement `collect()` and `refund()` in `src/payments.js`. Mobile money is asynchronous, so this will need a webhook.
+- [x] **Customer payments:** Pesepay (`src/pesepay.js`, `src/payments.js`). EcoCash/OneMoney use seamless mode (PIN prompt on the phone); cards use Pesepay's hosted page.
+- [ ] **OneMoney method code.** Not in Pesepay's sandbox; get the live code and set `PESEPAY_ONEMONEY_CODE`. The OneMoney button stays hidden until then.
+- [ ] **Refunds.** Pesepay's API has no refund call. Orders that are paid but fail to vend become `refund_due` with an `!!! ALERT` in the log; refund them from the Pesepay merchant panel.
+- [ ] **Result callback.** Pesepay posts results to `PUBLIC_URL/api/payments/pesepay/result`, which only works once Bhadala is hosted. Until then Bhadala checks payment status itself every few seconds.
 - [ ] **Vendor wallet float.** Response `51` means the wallet is empty. Keep it topped up, and consider adding a low-balance alert (balance enquiry, processing code 300000).
 - [ ] **SMS.** Send tokens to the customer by SMS, in the order given (some purchases return several tokens).
 - [ ] **Database.** Orders are saved to `data/orders.json`. Fine for a pilot; move to a real database before real volume.
